@@ -16,7 +16,7 @@ ubuntu ansible_host=127.0.0.1 ansible_port=2226
 
 ## ping test
 
-```
+```bash
 WSL-001@~$ansible lpic -m ping
  [WARNING]: Platform linux on host debian is using the discovered Python interpreter at /usr/bin/python, but future installation of another Python interpreter could change this. See
 https://docs.ansible.com/ansible/2.8/reference_appendices/interpreter_discovery.html for more information.
@@ -56,7 +56,7 @@ ubuntu | SUCCESS => {
 
 Dann habe ich in der `ansible.cfg` den entsprechenden Wert gesetzt, der die Warnung ausblendet:
 
-```
+```bash
 tail -1 /etc/ansible/ansible.cfg
 interpreter_python = auto_silent
 ```
@@ -65,7 +65,7 @@ interpreter_python = auto_silent
 
 Nun die Python-Versionen prüfen:
 
-```
+```bash
 ansible lpic -a "python --version"
 debian | CHANGED | rc=0 >>
 Python 2.7.13
