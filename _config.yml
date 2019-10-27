@@ -1,4 +1,7 @@
 theme: jekyll-theme-cayman
+highlighter: rouge
+name: LPIC 2 Vorbereitung
+url: https://ogaida.github.io/lpic2/
 
 gems:
   -octopress-escape-code
