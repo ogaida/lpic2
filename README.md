@@ -1,17 +1,15 @@
 
-# Snippets
+# LPIC 2 Vorbereitung
 
-Ein paar CODE-Schnipsel zum stöbern.
+Das ist meine persönliche Vorbereitung auf die LPIC 2 Zertifizierung. Ich gebe keine Garantie für Korrektheit.
 
-Es handelt sich hier um eine statische Website auf jekyll-BASIS. jekyll wird von github gut unterstützt, wodurch es relativ einfach ist, hier Informationen zu veröffentlichen.
-
-# more
+# Links zu den Unterseiten
 
 |--|--|--|
-| [conditionals](./Conditionals.html)| [windows](./windows.html) | [bash](./bash.html) |
-|[regex](./regex.html)|[jekyll](./jekyll.html)||
+| [pretasks](./pretasks.html)|||
+||||
 
 
-## Demo
+## Online
 
-[http://snippets.schnatzefatt.de/](http://snippets.schnatzefatt.de/)
+[http://lpic2.schnatzefatt.de/](http://lpic2.schnatzefatt.de/)
