@@ -54,4 +54,29 @@ ubuntu | SUCCESS => {
 }
 ```
 
+Dann habe ich in der `ansible.cfg` den entsprechenden Wert gesetzt, der die Warnung ausblendet:
+
+```
+tail -1 /etc/ansible/ansible.cfg
+interpreter_python = auto_silent
+```
+
+Nun die Python-Versionen prüfen:
+
+```
+ansible lpic -a "python --version"
+debian | CHANGED | rc=0 >>
+Python 2.7.13
+
+ubuntu | CHANGED | rc=0 >>
+Python 2.7.15+
+
+centos | CHANGED | rc=0 >>
+Python 2.7.5
+
+suse | CHANGED | rc=0 >>
+Python 2.7.13
+```
+
+
 [HOME](./)
