@@ -1,5 +1,9 @@
+---
+title: Vorbereitung auf die LPIC 2 Zertifizierung
+---
 
-# LPIC 2 Vorbereitung
+# {{ page.title }}
+ 
 
 Das ist meine persönliche Vorbereitung auf die LPIC 2 Zertifizierung. Ich gebe keine Garantie für Korrektheit.
 
