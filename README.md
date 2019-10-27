@@ -14,4 +14,4 @@ Das ist meine persönliche Vorbereitung auf die LPIC 2 Zertifizierung. Ich gebe 
 
 ## Online
 
-[http://lpic2.schnatzefatt.de/](http://lpic2.schnatzefatt.de/)
+[https://ogaida.github.io/lpic2/](https://ogaida.github.io/lpic2/)
