@@ -61,6 +61,8 @@ tail -1 /etc/ansible/ansible.cfg
 interpreter_python = auto_silent
 ```
 
+## Python-Versionen
+
 Nun die Python-Versionen prüfen:
 
 ```
