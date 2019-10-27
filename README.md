@@ -11,10 +11,6 @@ Das ist meine persönliche Vorbereitung auf die LPIC 2 Zertifizierung. Ich gebe 
 
 0. [pretasks](./pretasks.html)
 
-|--|--|--|
-| [pretasks](./pretasks.html)|||
-||||
-
 
 ## Online
 
