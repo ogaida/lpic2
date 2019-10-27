@@ -3,7 +3,7 @@ theme: jekyll-theme-cayman
 gems:
   -octopress-escape-code
   
-# like described here https://adam.garrett-harris.com/how-to-redirect-pages-in-jekyll/
+# like described here https://adam.garrett-harris.com/how-to-redirect-pages-in-jekyll/ ...
 collections:
   redirects:
     output: true
