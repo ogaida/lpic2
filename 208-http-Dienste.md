@@ -10,7 +10,7 @@ title: 208 http Dienste
 ### wichtige Direktiven
 
 
-- `MinSpareServers` Anzahl der httpd Instanzen, die geladen werden, wenn der Dienst gestartet wird.
+- `MinSpareServers` Minimale Anzahl der unbeschäftigten Kindprozesse des Servers
 
 ```
 
