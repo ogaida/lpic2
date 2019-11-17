@@ -14,7 +14,7 @@ title: 208 http Dienste
 
 ### Authentifizierung
 
-##### htpaaswd-Parameter:
+##### htpasswd-Parameter:
 
 - Create/overwrite htpasswd file:
 
