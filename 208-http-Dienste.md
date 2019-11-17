@@ -16,6 +16,8 @@ title: 208 http Dienste
 
 ##### htpasswd-Parameter:
 
+siehe [https://github.com/tldr-pages/tldr/blob/master/pages/common/htpasswd.md](https://github.com/tldr-pages/tldr/blob/master/pages/common/htpasswd.md)
+
 - Create/overwrite htpasswd file:
 
 `htpasswd -c {{path/to/file}} {{user_name}}`
