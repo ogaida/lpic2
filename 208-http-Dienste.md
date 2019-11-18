@@ -123,7 +123,7 @@ __ACHTUNG:__ Anfragen die über einen Proxy reinkommen, müssen entweder dort ko
 
 Bemerkung: Innerhalb der `RequireAny`-Sektion genügt es, wenn eine der angegebenen `Require`-Deriktive erfüllt ist, damit der Zugriff erlaubt wird.
 
-Erzeugen des Passwortfiles:
+Erzeugen des Passwortfiles :
 
 ```
 $ sudo htpasswd -c /data/pwfile oliver.gaida
