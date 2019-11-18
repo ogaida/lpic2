@@ -20,25 +20,20 @@ siehe [https://github.com/tldr-pages/tldr/blob/master/pages/common/htpasswd.md](
 
 - Create/overwrite htpasswd file:
 
-`htpasswd -c {{path/to/file}} {{user_name}}`
+`htpasswd -c path/to/file user_name`
 
 - Add user to htpasswd file or update existing user:
 
-`htpasswd {{path/to/file}} {{user_name}}`
+`htpasswd path/to/file user_name`
 
 - Add user to htpasswd file in batch mode without an interactive password prompt (for script usage):
 
-`htpasswd -b {{path/to/file}} {{user_name}} {{password}}`
+`htpasswd -b path/to/file user_name password`
 
 - Delete user from htpasswd file:
 
-`htpasswd -D {{path/to/file}} {{user_name}}`
+`htpasswd -D path/to/file user_name`
 
 - Verify user password:
 
-`htpasswd -v {{path/to/file}} {{user_name}}`
-
-
-```
-
-```
+`htpasswd -v path/to/file user_name`
