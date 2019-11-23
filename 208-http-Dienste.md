@@ -12,7 +12,7 @@ title: 208 http Dienste
 
 ### 208.1.2 Authentifizierung
 
-##### Module `mod_auth_basic`
+#### Modul `mod_auth_basic`
 
 Hier wird über die Direktive [AuthUserFile](https://httpd.apache.org/docs/2.4/mod/mod_authn_file.html#authuserfile) die Datei mit den verschlüsselten Passwörtern verlinkt.
 Diese Datei wird mit dem Befehl `htpasswd` erzeugt.
@@ -39,7 +39,7 @@ wichtige `htpasswd`-Parameter sind (siehe auch [https://cht.sh/htpasswd](https:/
 
 `htpasswd -v path/to/file user_name`
 
-#### Module `mod_authz_host`
+#### Modul `mod_authz_host`
 
 Ausführliche Beschreibung unter [https://httpd.apache.org/docs/2.4/mod/mod_authz_host.html](https://httpd.apache.org/docs/2.4/mod/mod_authz_host.html).
 
@@ -105,23 +105,50 @@ bedient alle lokalen Anfragen, also immer verwenden, wenn auf dem Webserver loka
 
 __ACHTUNG:__ Anfragen die über einen Proxy reinkommen, müssen entweder dort kontrolliert werden, oder mit `mod_remoteip` behandelt werden. Das geht vermutlich über den LPIC2 Rahmen hinaus.
 
-#### Anwendung
+#### Modul `mod_authz_groupfile`
+
+mit hilfe dieses Modules kann man eine weitere Textdatei über die Direktive `AuthGroupFile <path>` einbinden, in der man User zu Gruppen zuordnet:
 
 ```
+grp1: user1 user2
+grp2: user3 user4
+```
+
+um dann später nur bestimmte Gruppe zuzulassen verwendet man die Direktive `Require group <groupname1> [<groupname2> ...]`
+
+```apache
+AuthGroupFile /data/groups
+Require group grp1 grp2
+```
+
+#### `.htaccess` Datei verwenden
+
+die Authorisierungsderiktiven können auch über eine `.htacces` Datei im DocumentRoot des vhosts oder eines seiner Unterverzeichnisse verwaltet werden. Das muss jedoch über
+die Apache-Konfiguration in einer `Directory`-Sektion erlaubt werden. Zum Beispiel mit:
+
+```apache
+<Directory /data/www/my.domain.tdl/html/>
+  AllowOverride AuthConfig # oder mit dem stärkeren `AllowOverride All`
+</Directory>
+```
+
+#### Anwendung
+
+```apache
 <Location />
   <RequireAny>
      AuthType Basic
      AuthName "Geheimer Bereich"
      AuthBasicProvider file
      AuthUserFile /data/pwfile
-     Require user oliver.gaida
+     Require user oliver.gaida # alternativ auch: Require group grp1 ... oder Require valid-user
      # private Adresse brauchen sich nicht authentifizieren
      Require ip 192.168.0.0/16 172.16.0.0/12 10.0.0.0/8
   </RequireAny>
 </Location>
 ```
 
-Bemerkung: Innerhalb der `RequireAny`-Sektion genügt es, wenn eine der angegebenen `Require`-Deriktive erfüllt ist, damit der Zugriff erlaubt wird.
+Bemerkung: Innerhalb der `RequireAny`-Sektion genügt es, wenn eine der angegebenen `Require`-Direktiven erfüllt ist, damit der Zugriff erlaubt wird.
 
 Erzeugen des Passwortfiles :
 
