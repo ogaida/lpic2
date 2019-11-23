@@ -6,6 +6,104 @@ title: 208 http Dienste
 
 ## 208.1 Grundlegende Apache-Konfiguration
 
+### Vorbereitende Installationen
+
+- Apache2.4:
+
+Die Paketnamen lauten für mein Distributionen:
+
+| Distribution   | Paketname |
+| -------------- | --------- |
+| suse           | apache2   |
+| debian, ubuntu | apache2   |
+| centos         | httpd     |
+
+Playbook `playbooks/install_apache2.yml`:
+
+```yml
+---
+- name: Install Apache
+  hosts:
+    - lpic
+  vars:
+    apache2:
+    - suse
+    - debian
+    - ubuntu
+  become: yes
+  gather_facts: no
+  tasks:
+  - name: install apache2
+    package:
+      name: apache2
+    when: inventory_hostname != "centos"
+  - name: start apache2
+    service:
+      name: apache2
+      state: started
+      enabled: yes
+    when: inventory_hostname != "centos"
+  - name: install apache2
+    package:
+      name: httpd
+    when: inventory_hostname == "centos"
+  - name: start apache2
+    service:
+      name: httpd
+      state: started
+      enabled: yes
+    when: inventory_hostname == "centos"
+```
+
+Installation
+
+```
+ansible-playbook playbooks/install_apache2.yml
+```
+
+Kontrolle mit `systemctl`:
+
+```
+ansible lpic -b -a 'systemctl -a' | grep -P '>>|http|apache'
+debian | CHANGED | rc=0 >>
+  apache2.service                                                                          loaded    active   running   The Apache HTTP Server
+ubuntu | CHANGED | rc=0 >>
+  apache2.service                                                                           loaded    active   running   The Apache HTTP Server
+centos | CHANGED | rc=0 >>
+  httpd.service                                                                                                  loaded    active   running   The Apache HTTP Server
+suse | CHANGED | rc=0 >>
+  apache2.service                                                                          loaded    active   running   The Apache Webserver
+  apache2.target                                                                           loaded    inactive dead      Apache target allowing to control multi setup
+```
+
+Prozesse anschauen:
+
+```
+ansible lpic -b -a 'ps -ef' | grep -P '>>|http|apache'
+debian | CHANGED | rc=0 >>
+root     16499     1  0 10:50 ?        00:00:00 /usr/sbin/apache2 -k start
+www-data 16501 16499  0 10:50 ?        00:00:06 /usr/sbin/apache2 -k start
+www-data 16502 16499  0 10:50 ?        00:00:06 /usr/sbin/apache2 -k start
+ubuntu | CHANGED | rc=0 >>
+root      2437     1  0 02:50 ?        00:00:00 /usr/sbin/apache2 -k start
+www-data  2439  2437  0 02:50 ?        00:00:00 /usr/sbin/apache2 -k start
+www-data  2440  2437  0 02:50 ?        00:00:00 /usr/sbin/apache2 -k start
+centos | CHANGED | rc=0 >>
+root      3236     1  0 14:38 ?        00:00:00 /usr/sbin/httpd -DFOREGROUND
+apache    3237  3236  0 14:38 ?        00:00:00 /usr/sbin/httpd -DFOREGROUND
+apache    3238  3236  0 14:38 ?        00:00:00 /usr/sbin/httpd -DFOREGROUND
+apache    3239  3236  0 14:38 ?        00:00:00 /usr/sbin/httpd -DFOREGROUND
+apache    3240  3236  0 14:38 ?        00:00:00 /usr/sbin/httpd -DFOREGROUND
+apache    3241  3236  0 14:38 ?        00:00:00 /usr/sbin/httpd -DFOREGROUND
+suse | CHANGED | rc=0 >>
+root      7299     1  0 14:38 ?        00:00:00 /usr/sbin/httpd-prefork -DSYSCONFIG -C PidFile /var/run/httpd.pid -C Include /etc/apache2/sysconfig.d//loadmodule.conf -C Include /etc/apache2/sysconfig.d//global.conf -f /etc/apache2/httpd.conf -c Include /etc/apache2/sysconfig.d//include.conf -DSYSTEMD -DFOREGROUND -k start
+wwwrun    7306  7299  0 14:38 ?        00:00:00 /usr/sbin/httpd-prefork -DSYSCONFIG -C PidFile /var/run/httpd.pid -C Include /etc/apache2/sysconfig.d//loadmodule.conf -C Include /etc/apache2/sysconfig.d//global.conf -f /etc/apache2/httpd.conf -c Include /etc/apache2/sysconfig.d//include.conf -DSYSTEMD -DFOREGROUND -k start
+wwwrun    7307  7299  0 14:38 ?        00:00:00 /usr/sbin/httpd-prefork -DSYSCONFIG -C PidFile /var/run/httpd.pid -C Include /etc/apache2/sysconfig.d//loadmodule.conf -C Include /etc/apache2/sysconfig.d//global.conf -f /etc/apache2/httpd.conf -c Include /etc/apache2/sysconfig.d//include.conf -DSYSTEMD -DFOREGROUND -k start
+wwwrun    7308  7299  0 14:38 ?        00:00:00 /usr/sbin/httpd-prefork -DSYSCONFIG -C PidFile /var/run/httpd.pid -C Include /etc/apache2/sysconfig.d//loadmodule.conf -C Include /etc/apache2/sysconfig.d//global.conf -f /etc/apache2/httpd.conf -c Include /etc/apache2/sysconfig.d//include.conf -DSYSTEMD -DFOREGROUND -k start
+wwwrun    7309  7299  0 14:38 ?        00:00:00 /usr/sbin/httpd-prefork -DSYSCONFIG -C PidFile /var/run/httpd.pid -C Include /etc/apache2/sysconfig.d//loadmodule.conf -C Include /etc/apache2/sysconfig.d//global.conf -f /etc/apache2/httpd.conf -c Include /etc/apache2/sysconfig.d//include.conf -DSYSTEMD -DFOREGROUND -k start
+wwwrun    7310  7299  0 14:38 ?        00:00:00 /usr/sbin/httpd-prefork -DSYSCONFIG -C PidFile /var/run/httpd.pid -C Include /etc/apache2/sysconfig.d//loadmodule.conf -C Include /etc/apache2/sysconfig.d//global.conf -f /etc/apache2/httpd.conf -c Include /etc/apache2/sysconfig.d//include.conf -DSYSTEMD -DFOREGROUND -k start
+```
+
 ### 208.1.1 wichtige Direktiven
 
 - `MinSpareServers` Minimale Anzahl der unbeschäftigten Kindprozesse des Servers. siehe auch [https://httpd.apache.org/docs/2.4/mod/prefork.html#minspareservers](https://httpd.apache.org/docs/2.4/mod/prefork.html#minspareservers)
@@ -51,32 +149,32 @@ Die Einschränkung über IP-Adressen kann folgende Formen haben:
 
 Vollständig:
 
-```
+```apache
 Require ip 192.168.1.104 192.168.1.205
 ```
 
 Partiale Angaben:
 
-```
+```apache
 Require ip 10 172.20 192.168.2
 ```
 
 Netzwerk/Netzmaske Pärchen:
 
-```
+```apache
 Require ip 10.1.0.0/255.255.0.0
 ```
 
 CIDR-Notation:
 
-```
+```apache
 # private Adresse:
 Require ip 192.168.0.0/16 172.16.0.0/12 10.0.0.0/8
 ```
 
 IPv6
 
-```
+```apache
 Require ip 2001:db8::a00:20ff:fea7:ccea
 Require ip 2001:db8:1:1::a
 Require ip 2001:db8:2:1::/64
@@ -86,7 +184,7 @@ Require ip 2001:db8:2:1::/64
 
 Die angegebenen top-Level, second-Level etc. Domain-Namen müssen konkret übereinstimmen, Teilstrings der jeweiligen Level matchen nicht. Bei diesem Verfahren findet erst ein Reverse-DNS-Lookup und danach ein DNS-Lookup statt. Im folgenden Beispiel matched `123.example.org` aber nicht `1example.org`
 
-```
+```apache
 Require host example.org
 Require host .net example.edu
 ```
@@ -95,7 +193,7 @@ Require host .net example.edu
 
 Hier findet nur ein DNS-Lookup statt. Wenn die IP-Adresse des Clients mit der eines der DNS-Lookups übereinstimmt, ist die Require-Direktive bestätigt.
 
-```
+```apache
 Require forward-dns bla.example.org
 ```
 
@@ -152,7 +250,7 @@ Bemerkung: Innerhalb der `RequireAny`-Sektion genügt es, wenn eine der angegebe
 
 Erzeugen des Passwortfiles :
 
-```
+```bash
 $ sudo htpasswd -c /data/pwfile oliver.gaida
 New password:
 Re-type new password:
