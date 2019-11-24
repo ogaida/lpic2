@@ -443,7 +443,7 @@ Der Pfad zum Konfigfile setzt sich aus `HTTPD_ROOT` und `SERVER_CONFIG_FILE` zus
 Nun suchen wir nach allen Zeilen die den String `log` enthalten und sich auch auf die Konfiguration auswirken, also weder Leer- noch Kommentarzeilen.
 
 ```
-[root@centos ~]# [root@centos ~]# grep -i log /etc/httpd/conf/httpd.conf  | grep -vP '^(\s*|\s*#.*)$'
+[root@centos ~]# grep -i log /etc/httpd/conf/httpd.conf  | grep -vP '^(\s*|\s*#.*)$'
 ErrorLog "logs/error_log"
 LogLevel warn
 <IfModule log_config_module>
@@ -500,7 +500,7 @@ suse | CHANGED | rc=0 >>
 | debian, Ubuntu | `/etc/apache2/apache2.conf`    |
 | suse           | `/etc/apache2/httpd.conf`      |
 
-Mit Hilfe der Distor Facts können wir dann wieder arbeiten:
+Mit Hilfe der Distro Facts können wir dann wieder arbeiten:
 
 ```
 ansible lpic -b -m setup -a "filter=ansible_distribution_file_variety" | grep ansible_distribution_file_variety
@@ -614,5 +614,44 @@ Datei `playbooks/check_apache2_conf_all_includes.yml`:
       debug:
         var: returned_json.stdout_lines
 ```
+
+Mal schauen, was wir jetzt finden:
+
+```
+ansible-playbook playbooks/check_apache2_conf_all_includes.yml -e 'directive=\w*Server\w*'
+```
+
+Leider unterstützt `centos` die `apachectl`-Parameter ` -t -D DUMP_INCLUDES` nicht.
+
+```
+TASK [Ausgabe] *****************************************************************************************************************************ok: [debian] => {
+    "returned_json.stdout_lines": [
+        "/etc/apache2/apache2.conf:ServerName Debian ",
+        "/etc/apache2/mods-enabled/mpm_event.conf:\tStartServers\t\t\t 2",
+        "/etc/apache2/conf-enabled/security.conf:ServerTokens OS",
+        "/etc/apache2/conf-enabled/security.conf:ServerSignature On",
+        "/etc/apache2/sites-enabled/000-default.conf:\tServerAdmin webmaster@localhost"
+    ]
+}                                                                                                                                           ok: [suse] => {
+    "returned_json.stdout_lines": [
+        "/etc/apache2/sysconfig.d/global.conf:ServerSignature off",
+        "/etc/apache2/sysconfig.d/global.conf:ServerTokens ProductOnly",
+        "/etc/apache2/server-tuning.conf:\tStartServers         5",
+        "/etc/apache2/server-tuning.conf:\tMinSpareServers      5",
+        "/etc/apache2/server-tuning.conf:\tMaxSpareServers     10",
+        "/etc/apache2/server-tuning.conf:\tServerLimit        150",
+        "/etc/apache2/server-tuning.conf:\tStartServers         3"
+    ]
+}                                                                                                                                           ok: [ubuntu] => {
+    "returned_json.stdout_lines": [
+        "/etc/apache2/apache2.conf:ServerName Ubuntu",
+        "/etc/apache2/mods-enabled/mpm_event.conf:\tStartServers\t\t\t 2",
+        "/etc/apache2/conf-enabled/security.conf:ServerTokens OS",
+        "/etc/apache2/conf-enabled/security.conf:ServerSignature On",
+        "/etc/apache2/sites-enabled/000-default.conf:\tServerAdmin webmaster@localhost"
+    ]
+}        
+```
+
 
 [HOME](./)
