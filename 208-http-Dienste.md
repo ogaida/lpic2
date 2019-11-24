@@ -6,17 +6,18 @@ title: 208 http Dienste
 
 ## 208.1 Grundlegende Apache-Konfiguration
 
-### Vorbereitende Installationen
+### Vorbereitung
+
+#### Installation des Apache 2.4
 
 - Apache2.4:
 
-Die Paketnamen lauten für mein Distributionen:
+Die Paketnamen lauten für meine verwendeten Distributionen:
 
-| Distribution   | Paketname |
-| -------------- | --------- |
-| suse           | apache2   |
-| debian, ubuntu | apache2   |
-| centos         | httpd     |
+| Distribution         | Paketname |
+| -------------------- | --------- |
+| debian, suse, ubuntu | apache2   |
+| centos               | httpd     |
 
 Playbook `playbooks/install_apache2.yml`:
 
@@ -25,11 +26,6 @@ Playbook `playbooks/install_apache2.yml`:
 - name: Install Apache
   hosts:
     - lpic
-  vars:
-    apache2:
-    - suse
-    - debian
-    - ubuntu
   become: yes
   gather_facts: no
   tasks:
@@ -103,6 +99,133 @@ wwwrun    7308  7299  0 14:38 ?        00:00:00 /usr/sbin/httpd-prefork -DSYSCON
 wwwrun    7309  7299  0 14:38 ?        00:00:00 /usr/sbin/httpd-prefork -DSYSCONFIG -C PidFile /var/run/httpd.pid -C Include /etc/apache2/sysconfig.d//loadmodule.conf -C Include /etc/apache2/sysconfig.d//global.conf -f /etc/apache2/httpd.conf -c Include /etc/apache2/sysconfig.d//include.conf -DSYSTEMD -DFOREGROUND -k start
 wwwrun    7310  7299  0 14:38 ?        00:00:00 /usr/sbin/httpd-prefork -DSYSCONFIG -C PidFile /var/run/httpd.pid -C Include /etc/apache2/sysconfig.d//loadmodule.conf -C Include /etc/apache2/sysconfig.d//global.conf -f /etc/apache2/httpd.conf -c Include /etc/apache2/sysconfig.d//include.conf -DSYSTEMD -DFOREGROUND -k start
 ```
+
+Versions-Check mit `apachectl -v`:
+
+```
+ansible lpic -b -a 'apachectl -v'
+debian | CHANGED | rc=0 >>
+Server version: Apache/2.4.25 (Debian)
+Server built:   2019-10-13T15:43:54
+
+ubuntu | CHANGED | rc=0 >>
+Server version: Apache/2.4.29 (Ubuntu)
+Server built:   2019-09-16T12:58:48
+
+centos | CHANGED | rc=0 >>
+Server version: Apache/2.4.6 (CentOS)
+Server built:   Aug  8 2019 11:41:18
+
+suse | CHANGED | rc=0 >>
+Server version: Apache/2.4.23 (Linux/SUSE)
+Server built:   2019-04-04 14:59:07.000000000 +0000
+```
+
+#### Konfiguration / Einstellungen checken
+
+hier nur am Beispiel von Centos
+
+```
+ansible centos -b -a 'apachectl -h'
+centos | FAILED | rc=1 >>
+Usage: /usr/sbin/httpd [-D name] [-d directory] [-f file]
+                       [-C "directive"] [-c "directive"]
+                       [-k start|restart|graceful|graceful-stop|stop]
+                       [-v] [-V] [-h] [-l] [-L] [-t] [-T] [-S] [-X]
+Options:
+  -D name            : define a name for use in <IfDefine name> directives
+  -d directory       : specify an alternate initial ServerRoot
+  -f file            : specify an alternate ServerConfigFile
+  -C "directive"     : process directive before reading config files
+  -c "directive"     : process directive after reading config files
+  -e level           : show startup errors of level (see LogLevel)
+  -E file            : log startup errors to file
+  -v                 : show version number
+  -V                 : show compile settings
+  -h                 : list available command line options (this page)
+  -l                 : list compiled in modules
+  -L                 : list available configuration directives
+  -t -D DUMP_VHOSTS  : show parsed vhost settings
+  -t -D DUMP_RUN_CFG : show parsed run settings
+  -S                 : a synonym for -t -D DUMP_VHOSTS -D DUMP_RUN_CFG
+  -t -D DUMP_MODULES : show all loaded modules
+  -M                 : a synonym for -t -D DUMP_MODULES
+  -t                 : run syntax check for config files
+  -T                 : start without DocumentRoot(s) check
+  -X                 : debug mode (only one worker, do not detach)non-zero return code
+```
+
+##### Einstellungen die beim Kompilieren des apache2 gesetzt wurden:
+
+```
+ansible centos -b -a 'apachectl -V'
+centos | CHANGED | rc=0 >>
+Server version: Apache/2.4.6 (CentOS)
+Server built:   Aug  8 2019 11:41:18
+Server's Module Magic Number: 20120211:24
+Server loaded:  APR 1.4.8, APR-UTIL 1.5.2
+Compiled using: APR 1.4.8, APR-UTIL 1.5.2
+Architecture:   64-bit
+Server MPM:     prefork
+  threaded:     no
+    forked:     yes (variable process count)
+Server compiled with....
+ -D APR_HAS_SENDFILE
+ -D APR_HAS_MMAP
+ -D APR_HAVE_IPV6 (IPv4-mapped addresses enabled)
+ -D APR_USE_SYSVSEM_SERIALIZE
+ -D APR_USE_PTHREAD_SERIALIZE
+ -D SINGLE_LISTEN_UNSERIALIZED_ACCEPT
+ -D APR_HAS_OTHER_CHILD
+ -D AP_HAVE_RELIABLE_PIPED_LOGS
+ -D DYNAMIC_MODULE_LIMIT=256
+ -D HTTPD_ROOT="/etc/httpd"
+ -D SUEXEC_BIN="/usr/sbin/suexec"
+ -D DEFAULT_PIDLOG="/run/httpd/httpd.pid"
+ -D DEFAULT_SCOREBOARD="logs/apache_runtime_status"
+ -D DEFAULT_ERRORLOG="logs/error_log"
+ -D AP_TYPES_CONFIG_FILE="conf/mime.types"
+ -D SERVER_CONFIG_FILE="conf/httpd.conf"AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using fe80::5054:ff:fec9:c704. Set the 'ServerName' directive globally to suppress this message
+```
+
+hier schauen wir uns die zwei wichtigsten auf allen 4 Systemen genauer an:
+
+```
+ansible lpic -b -a 'apachectl -V' | grep -P 'Server MPM:|threaded:|>>'
+debian | CHANGED | rc=0 >>
+Server MPM:     event
+  threaded:     yes (fixed thread count)
+centos | CHANGED | rc=0 >>
+Server MPM:     prefork
+  threaded:     no
+suse | CHANGED | rc=0 >>
+Server MPM:     prefork
+  threaded:     no
+ubuntu | CHANGED | rc=0 >>
+Server MPM:     event
+  threaded:     yes (fixed thread count)
+```
+
+MPM steht hier für __Multi-Processing Module__ . Aktuell sind drei verschieden MPMs verbreitet:
+
+- prefork
+- worker
+- event
+
+die Unterschiede liegen in der Speichernutzung und der Performance:
+
+| MPM-Type | Beschreibung                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| prefork  | Prefork MPM startet mehrere untergeordnete Prozesse. Jeder untergeordnete Prozess verarbeitet jeweils eine Verbindung. Prefork verwendet im Vergleich zu Worker-MPM viel Arbeitsspeicher. Prefork ist das Standard-MPM, das vom Apache2-Server verwendet wird. In Preform MPM werden immer nur wenige (MinSpareServers) definierte Prozesse als Reserve ausgeführt, sodass neue Anforderungen nicht auf den Start eines neuen Prozesses warten müssen. |
+| worker | Worker MPM generiert mehrere untergeordnete Prozesse ähnlich wie Prefork. Jeder untergeordnete Prozess führt viele Threads aus. Jeder Thread verarbeitet jeweils eine Verbindung. In Worker MPM ist ein hybrider Multiprozess-Multi-Thread-Server implementiert. Worker MPM verwendet im Vergleich zu Prefork MPM wenig Arbeitsspeicher. |
+| event | Event MPM wurde in Apache 2.4 eingeführt. Es ähnelt Worker MPM, wurde jedoch für die Verwaltung hoher Lasten entwickelt. Mit diesem MPM können mehr Anforderungen gleichzeitig bedient werden, indem einige Verarbeitungsaufgaben an unterstützende Threads übergeben werden. Mit diesem MPM versucht Apache, das "Keep Alive" -Problem zu beheben, mit dem andere MPMs konfrontiert sind. Wenn ein Client die erste Anforderung abschließt, kann der Client die Verbindung offen halten und weitere Anforderungen über denselben Socket senden, wodurch die Verbindungsüberlastung verringert wird. |
+
+Die bereits beim kompilieren eingestellten Einstellungen bezüglich des verwendeten MPMs lassen sich durch da aktivieren und deaktivieren entsprechender Module bzw. verwenden unterschiedlicher Binaries umschalten.
+
+WICHTIG:
+
+Um zusätzliche Umgebungsvariablen dem Apache2 Prozess mitzugeben, kann man die Datei (bei Centos/Redhat und Suse) `/etc/sysconfig/httpd` bearbeiten. Bei Debian-like Systemen
+lautet diese Datei `/etc/apache2/envvars`.
 
 ### 208.1.1 wichtige Direktiven
 
@@ -255,6 +378,241 @@ $ sudo htpasswd -c /data/pwfile oliver.gaida
 New password:
 Re-type new password:
 Adding password for user oliver.gaida
+```
+
+#### Logfiles
+
+Erstmal dafür sorgen dass ein paar Logfiles erstellt werden:
+
+```
+ansible lpic -a 'curl -s http://localhost' | grep -iP '>>|title.*apache'
+```
+
+und nun mit locate mal nach den logfiles suchen:
+
+```
+ansible lpic -b -a 'updatedb'
+```
+
+und nun mal nach Logfiles suchen:
+
+```
+WSL-000@~$ansible lpic -b -a 'locate access.log'
+debian | CHANGED | rc=0 >>
+/var/log/apache2/access.log
+/var/log/apache2/other_vhosts_access.log
+
+ubuntu | CHANGED | rc=0 >>
+/var/log/apache2/access.log
+/var/log/apache2/access.log.1
+/var/log/apache2/other_vhosts_access.log
+
+centos | FAILED | rc=1 >>
+non-zero return code
+
+suse | FAILED | rc=1 >>
+non-zero return code
+
+WSL-000@~$ansible lpic -b -a 'locate error.log'
+debian | CHANGED | rc=0 >>
+/var/log/apache2/error.log
+
+ubuntu | CHANGED | rc=0 >>
+/var/log/apache2/error.log
+/var/log/apache2/error.log.1
+
+centos | FAILED | rc=1 >>
+non-zero return code
+
+suse | FAILED | rc=1 >>
+non-zero return code
+```
+
+Wo hat centos seine Logfiles? Wo liegt die Hauptkonfigurationsdatei? Das erfahren wir über apachectl -V oder httpd -V (bei centos):
+
+```
+[root@centos ~]# httpd -V
+...
+ -D HTTPD_ROOT="/etc/httpd"
+...
+ -D SERVER_CONFIG_FILE="conf/httpd.conf"
+```
+
+Der Pfad zum Konfigfile setzt sich aus `HTTPD_ROOT` und `SERVER_CONFIG_FILE` zusammen:  `/etc/httpd/conf/httpd.conf`
+
+Nun suchen wir nach allen Zeilen die den String `log` enthalten und sich auch auf die Konfiguration auswirken, also weder Leer- noch Kommentarzeilen.
+
+```
+[root@centos ~]# [root@centos ~]# grep -i log /etc/httpd/conf/httpd.conf  | grep -vP '^(\s*|\s*#.*)$'
+ErrorLog "logs/error_log"
+LogLevel warn
+<IfModule log_config_module>
+    LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
+    LogFormat "%h %l %u %t \"%r\" %>s %b" common
+    <IfModule logio_module>
+      LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %I %O" combinedio
+    CustomLog "logs/access_log" combined
+```
+
+Aha es heißt access_log. Bei suse auch:
+
+Bemerkung: Hier sehen wir auch gleich wie das Modul heißt, dass zum Setzen von Log-Formaten verwendet wird. Die einzelnen Parameter kann man [hier](https://httpd.apache.org/docs/2.4/mod/mod_log_config.html) nachlesen.
+
+```
+ansible suse,centos -b -a 'locate access_log'
+centos | CHANGED | rc=0 >>
+/var/log/httpd/access_log
+
+suse | CHANGED | rc=0 >>
+/var/log/apache2/access_log
+
+ansible suse,centos -b -a 'locate error_log'
+centos | CHANGED | rc=0 >>
+/var/log/httpd/error_log
+
+suse | CHANGED | rc=0 >>
+/var/log/apache2/error_log
+```
+
+#### weitere Einstellungen
+
+verschaffen wir uns mal einen Überblick, wie die Hauptkonfigurationsdateien des Apache2.4 der einzelnen Distros lauten:
+
+```
+ansible lpic -b -a 'apachectl -V' | grep -P '>>|ROOT|CONFIG' | grep -v 'AP_TYPES_CONFIG_FILE'
+debian | CHANGED | rc=0 >>
+ -D HTTPD_ROOT="/etc/apache2"
+ -D SERVER_CONFIG_FILE="apache2.conf"
+ubuntu | CHANGED | rc=0 >>
+ -D HTTPD_ROOT="/etc/apache2"
+ -D SERVER_CONFIG_FILE="apache2.conf"
+centos | CHANGED | rc=0 >>
+ -D HTTPD_ROOT="/etc/httpd"
+ -D SERVER_CONFIG_FILE="conf/httpd.conf"
+suse | CHANGED | rc=0 >>
+ -D HTTPD_ROOT="/srv/www"
+ -D SERVER_CONFIG_FILE="/etc/apache2/httpd.conf"
+```
+
+| Distro         | main-Konfigfile-Pfad (default) |
+| -------------- | ------------------------------ |
+| CentOS         | `/etc/httpd/conf/httpd.conf`   |
+| debian, Ubuntu | `/etc/apache2/apache2.conf`    |
+| suse           | `/etc/apache2/httpd.conf`      |
+
+Mit Hilfe der Distor Facts können wir dann wieder arbeiten:
+
+```
+ansible lpic -b -m setup -a "filter=ansible_distribution_file_variety" | grep ansible_distribution_file_variety
+        "ansible_distribution_file_variety": "Debian",
+        "ansible_distribution_file_variety": "SUSE",
+        "ansible_distribution_file_variety": "RedHat",
+        "ansible_distribution_file_variety": "Debian",
+```
+
+nun mit einem geeigneten Playbook Parameter prüfen oder setzen:
+
+Datei `playbooks/check_apache2_conf.yml`:
+
+```yaml
+---
+- name: Apache2.4 Konfigfile check
+  hosts:
+    - lpic
+  become: yes
+  vars:
+    dist:
+      Debian:
+        config: /etc/apache2/apache2.conf
+      SUSE:
+        config: /etc/apache2/httpd.conf
+      RedHat:
+        config: /etc/httpd/conf/httpd.conf
+  tasks:
+    - name: show ServerName Direktive
+      shell: "grep -iP '^\\s*{{ directive }}' {{ dist[ansible_distribution_file_variety].config }}" # Backslash must escaped with Backslash
+      register: returned_json
+    - name: Ausgabe
+      debug:
+        var: returned_json.stdout_lines
+```
+
+```
+ansible-playbook check_apache2_conf.yml -e 'directive=\w*Server\w*'
+
+PLAY [Apache2.4 Konfigfile check] *************************************************************************************************************************************************************************************************************************************
+TASK [Gathering Facts] ************************************************************************************************************************************************************************************************************************************************ok: [debian]
+ok: [centos]
+ok: [suse]
+ok: [ubuntu]
+
+TASK [show ServerName Direktive] **************************************************************************************************************************************************************************************************************************************changed: [debian]
+changed: [ubuntu]
+changed: [centos]
+fatal: [suse]: FAILED! => {"changed": true, "cmd": "grep -iP '\\s*^\\w*Server\\w*' /etc/apache2/httpd.conf", "delta": "0:00:00.015739", "end": "2019-11-24 15:29:57.319370", "msg": "non-zero return code", "rc": 1, "start": "2019-11-24 15:29:57.303631", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [Ausgabe] ********************************************************************************************************************************************************************************************************************************************************ok: [centos] => {
+    "returned_json.stdout_lines": [
+        "ServerName Centos",
+        "ServerRoot \"/etc/httpd\"",
+        "ServerAdmin root@localhost"
+    ]
+}
+ok: [debian] => {
+    "returned_json.stdout_lines": [
+        "ServerName Debian "
+    ]
+}
+ok: [ubuntu] => {
+    "returned_json.stdout_lines": [
+        "ServerName Ubuntu"
+    ]
+}
+
+PLAY RECAP ************************************************************************************************************************************************************************************************************************************************************centos                     : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+debian                     : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+suse                       : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
+ubuntu                     : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+```
+
+um nun auch die `included`-Konfigurationsdateien mit zu durchsuchen können wir uns von `apachectl` helfen lassen:
+
+```
+apachectl  -t -D DUMP_INCLUDES
+Included configuration files:
+  (*) /etc/apache2/apache2.conf
+    (147) /etc/apache2/mods-enabled/access_compat.load
+    (147) /etc/apache2/mods-enabled/alias.load
+    (147) /etc/apache2/mods-enabled/auth_basic.load
+...
+apachectl  -t -D DUMP_INCLUDES | sed '1 d' | sed -E 's/^\s+\([^\)]+\)\s+//g'
+/etc/apache2/apache2.conf
+/etc/apache2/mods-enabled/access_compat.load
+/etc/apache2/mods-enabled/alias.load
+/etc/apache2/mods-enabled/auth_basic.load
+...
+apachectl  -t -D DUMP_INCLUDES | sed '1 d' | sed -E 's/^\s+\([^\)]+\)\s+//g' |  xargs grep  -iP '^\s*Server\w*'
+/etc/apache2/apache2.conf:ServerName Ubuntu
+/etc/apache2/conf-enabled/security.conf:ServerTokens OS
+/etc/apache2/conf-enabled/security.conf:ServerSignature On
+/etc/apache2/sites-enabled/000-default.conf:    ServerAdmin webmaster@localhost
+```
+
+Datei `playbooks/check_apache2_conf_all_includes.yml`:
+
+```yaml
+---
+- name: Apache2.4 Konfigfile check
+  hosts:
+    - lpic
+  become: yes
+  tasks:
+    - name: show ServerName Direktive
+      shell: "apachectl  -t -D DUMP_INCLUDES | sed '1 d' | sed -E 's/^\\s+\\([^\\)]+\\)\\s+//g' |  xargs grep  -iP '^\\s*{{ directive }}'" # Backslash must escaped with Backslash
+      register: returned_json
+    - name: Ausgabe
+      debug:
+        var: returned_json.stdout_lines
 ```
 
 [HOME](./)

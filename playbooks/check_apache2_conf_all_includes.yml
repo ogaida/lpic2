@@ -1,0 +1,12 @@
+---
+- name: Apache2.4 Konfigfile check
+  hosts:
+    - lpic
+  become: yes
+  tasks:
+    - name: show ServerName Direktive
+      shell: "apachectl  -t -D DUMP_INCLUDES | sed '1 d' | sed -E 's/^\\s+\\([^\\)]+\\)\\s+//g' |  xargs grep  -iP '^\\s*{{ directive }}'" # Backslash must escaped with Backslash
+      register: returned_json
+    - name: Ausgabe
+      debug:
+        var: returned_json.stdout_lines

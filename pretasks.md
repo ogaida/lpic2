@@ -80,7 +80,38 @@ suse | CHANGED | rc=0 >>
 Python 2.7.13
 ```
 
-## weiter
+## Kurznamen der Distros
 
+```
+ansible lpic -b -m setup -a "filter=ansible_distribution_file_variety" | grep ansible_distribution_file_variety
+        "ansible_distribution_file_variety": "Debian",
+        "ansible_distribution_file_variety": "SUSE",
+        "ansible_distribution_file_variety": "RedHat",
+        "ansible_distribution_file_variety": "Debian",
+```
+
+## sinvolle Paketinstallationen
+
+### locate / updatedb
+
+- Apache2.4:
+
+Die Paketnamen lauten für meine verwendeten Distributionen:
+
+| Distribution         | Paketname |
+| -------------------- | --------- |
+| debian, ubuntu | locate   |
+| centos,suse               | mlocate   |
+
+```
+ansible centos,suse -b -m package -a "name=mlocate"
+ansible ubuntu,debian -b -m package -a "name=locate"
+```
+
+### curl
+
+```
+ansible lpic -b -m package -a "name=curl"
+```
 
 [HOME](./)

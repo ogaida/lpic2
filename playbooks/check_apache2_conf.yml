@@ -1,0 +1,20 @@
+---
+- name: Apache2.4 Konfigfile check
+  hosts:
+    - lpic
+  become: yes
+  vars:
+    dist:
+      Debian:
+        config: /etc/apache2/apache2.conf
+      SUSE:
+        config: /etc/apache2/httpd.conf
+      RedHat:
+        config: /etc/httpd/conf/httpd.conf
+  tasks:
+    - name: show ServerName Direktive
+      shell: "grep -iP '^\\s*{{ directive }}' {{ dist[ansible_distribution_file_variety].config }}" # Backslash must escaped with Backslash
+      register: returned_json
+    - name: Ausgabe
+      debug:
+        var: returned_json.stdout_lines
