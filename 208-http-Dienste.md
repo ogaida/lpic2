@@ -123,15 +123,16 @@ Server built:   2019-04-04 14:59:07.000000000 +0000
 
 #### Konfiguration / Einstellungen checken
 
-hier nur am Beispiel von Centos
+hier nur am Beispiel von Debian:
 
 ```
-ansible centos -b -a 'apachectl -h'
-centos | FAILED | rc=1 >>
-Usage: /usr/sbin/httpd [-D name] [-d directory] [-f file]
-                       [-C "directive"] [-c "directive"]
-                       [-k start|restart|graceful|graceful-stop|stop]
-                       [-v] [-V] [-h] [-l] [-L] [-t] [-T] [-S] [-X]
+ansible debian -b -a 'apachectl -h'
+debian | FAILED | rc=1 >>
+Action '-h' failed.
+The Apache error log may have more information.Usage: /usr/sbin/apache2 [-D name] [-d directory] [-f file]
+                         [-C "directive"] [-c "directive"]
+                         [-k start|restart|graceful|graceful-stop|stop]
+                         [-v] [-V] [-h] [-l] [-L] [-t] [-T] [-S] [-X]
 Options:
   -D name            : define a name for use in <IfDefine name> directives
   -d directory       : specify an alternate initial ServerRoot
@@ -150,6 +151,7 @@ Options:
   -S                 : a synonym for -t -D DUMP_VHOSTS -D DUMP_RUN_CFG
   -t -D DUMP_MODULES : show all loaded modules
   -M                 : a synonym for -t -D DUMP_MODULES
+  -t -D DUMP_INCLUDES: show all included configuration files
   -t                 : run syntax check for config files
   -T                 : start without DocumentRoot(s) check
   -X                 : debug mode (only one worker, do not detach)non-zero return code
@@ -514,6 +516,8 @@ nun mit einem geeigneten Playbook Parameter prüfen oder setzen:
 
 Datei `playbooks/check_apache2_conf.yml`:
 
+<!--{% raw %} -->
+
 ```yaml
 ---
 - name: Apache2.4 Konfigfile check
@@ -536,6 +540,8 @@ Datei `playbooks/check_apache2_conf.yml`:
       debug:
         var: returned_json.stdout_lines
 ```
+
+<!--{% endraw %} -->
 
 ```
 ansible-playbook check_apache2_conf.yml -e 'directive=\w*Server\w*'
@@ -600,6 +606,8 @@ apachectl  -t -D DUMP_INCLUDES | sed '1 d' | sed -E 's/^\s+\([^\)]+\)\s+//g' |  
 
 Datei `playbooks/check_apache2_conf_all_includes.yml`:
 
+<!--{% raw %} -->
+
 ```yaml
 ---
 - name: Apache2.4 Konfigfile check
@@ -615,13 +623,15 @@ Datei `playbooks/check_apache2_conf_all_includes.yml`:
         var: returned_json.stdout_lines
 ```
 
+<!--{% endraw %} -->
+
 Mal schauen, was wir jetzt finden:
 
 ```
 ansible-playbook playbooks/check_apache2_conf_all_includes.yml -e 'directive=\w*Server\w*'
 ```
 
-Leider unterstützt `centos` die `apachectl`-Parameter ` -t -D DUMP_INCLUDES` nicht.
+Leider unterstützt `centos` die `apachectl`-Parameter ` -t -D DUMP_INCLUDES` nicht. Das liegt laut Bugreport [https://bz.apache.org/bugzilla/show_bug.cgi?id=59376](https://bz.apache.org/bugzilla/show_bug.cgi?id=59376) an der Apache Version, der Parameter wird erst aber Apache-Version 2.4.23 und höher unterstützt. Laut dem Bugreport kommt man hier mit dem Modul `mod_info` weiter.
 
 ```
 TASK [Ausgabe] *****************************************************************************************************************************ok: [debian] => {
