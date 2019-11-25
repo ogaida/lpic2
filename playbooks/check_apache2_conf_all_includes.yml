@@ -3,6 +3,7 @@
   hosts:
     - lpic
   become: yes
+  gather_facts: no
   tasks:
     - name: show ServerName Direktive
       shell: "apachectl  -t -D DUMP_INCLUDES | sed '1 d' | sed -E 's/^\\s+\\([^\\)]+\\)\\s+//g' |  xargs grep  -iP '^\\s*{{ directive }}'" # Backslash must escaped with Backslash
