@@ -15,5 +15,5 @@ Das ist meine persönliche Vorbereitung auf die LPIC 2 Zertifizierung. Ich gebe 
 ## Inhaltsverzeichnis
 
 - [pretasks](./pretasks.html)
-
-- [208-http-Dienste](./208-http-Dienste.html)
+- [208-http-Dienste Gewichtungen: 4,3,2,2](./208-http-Dienste.html)
+- [209-Gemeinsamer-Dateizugriff Gewichtungen: 5,3](./209-Gemeinsamer-Dateizugriff.html)
