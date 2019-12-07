@@ -1,0 +1,10 @@
+---
+title: <%= section %> <%= section_name %>
+---
+
+# {{ page.title }}
+
+<% i=1; @chapters.each do |chap| %>
+- [<%= section %>.<%= i %> <%= chap[:name] %> - Gewichtung: <%= chap[:weigth] %>](./<%= section %>.<%= i %>.html)
+<% i += 1; end %>
+[HOME](./)
