@@ -2,7 +2,6 @@ theme: jekyll-theme-cayman
 highlighter: rouge
 name: LPIC 2 Vorbereitung
 url: https://ogaida.github.io/lpic2/
-markdown: kramdown
 
 gems:
   -octopress-escape-code
