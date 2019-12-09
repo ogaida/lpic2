@@ -16,6 +16,8 @@ Das ist meine persönliche Vorbereitung auf die LPIC 2 Zertifizierung. Ich gebe 
 
 - [pretasks](./pretasks.html)
 - [207-Domain-Name-Server Gewichtungen: 3,3,2](./207-Domain-Name-Server.html)
-- [208-http-Dienste Gewichtungen: 4,3,2,2](./208-http-Dienste.html)
+- [208-HTTP-Dienste Gewichtungen: 4,3,2,2](./208-HTTP-Dienste.html)
 - [209-Gemeinsamer-Dateizugriff Gewichtungen: 5,3](./209-Gemeinsamer-Dateizugriff.html)
 - [210-Verwalten-von-Netzwerk-Clients Gewichtungen: 2,3,2,4](./210-Verwalten-von-Netzwerk-Clients.html)
+- [211-E-Mail-Dienste Gewichtungen: 4,2,2](./211-E-Mail-Dienste.html)
+- [212-Systemsicherheit Gewichtungen: 3,2,4,3,2](./212-Systemsicherheit.html)

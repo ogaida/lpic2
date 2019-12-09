@@ -1,22 +1,17 @@
 #!/usr/bin/env ruby
 require "erb"
 
-section = "210"
-section_name = "Verwalten von Netzwerk-Clients"
+section = "209"
+section_name = "Gemeinsamer Dateizugriff"
+
 
 @chapters = [
   {
-    :name => "DHCP-Konfiguration",
-    :weigth => "2"
+    :name => "Samba-Server-Konfiguration",
+    :weigth => "5"
   },{
-    :name => "PAM-Authentisierung",
+    :name => "NFS-Server-Konfiguration",
     :weigth => "3"
-  },{
-    :name => "LDAP auf dem Client",
-    :weigth => "2"
-  },{
-    :name => "Einen OpenLDAP-Server konfigurieren",
-    :weigth => "4"
   }
 ]
 
