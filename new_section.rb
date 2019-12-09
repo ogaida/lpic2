@@ -1,19 +1,22 @@
 #!/usr/bin/env ruby
 require "erb"
 
-section = "207"
-section_name = "Domain Name Server"
+section = "210"
+section_name = "Verwalten von Netzwerk-Clients"
 
 @chapters = [
   {
-    :name => "Grundlegende DNS-Serverkonfiguration",
-    :weigth => "3"
-  },{
-    :name => "Erstellen und Verwalten von DNS-Zonen",
-    :weigth => "3"
-  },{
-    :name => "Einen DNS-Server sichern",
+    :name => "DHCP-Konfiguration",
     :weigth => "2"
+  },{
+    :name => "PAM-Authentisierung",
+    :weigth => "3"
+  },{
+    :name => "LDAP auf dem Client",
+    :weigth => "2"
+  },{
+    :name => "Einen OpenLDAP-Server konfigurieren",
+    :weigth => "4"
   }
 ]
 

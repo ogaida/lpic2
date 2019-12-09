@@ -11,4 +11,8 @@ title: 207 Domain Name Server
 
 - [207.3 Einen DNS-Server sichern - Gewichtung: 2](./207.3.html)
 
+# Wertvolle Links zum Thema DNS
+
+- [https://www.zytrax.com/books/dns/](https://www.zytrax.com/books/dns/)
+
 [HOME](./)

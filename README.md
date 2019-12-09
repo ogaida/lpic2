@@ -10,7 +10,7 @@ title: Vorbereitung auf die LPIC 2 Zertifizierung
 
 Das ist meine persönliche Vorbereitung auf die LPIC 2 Zertifizierung. Ich gebe keine Garantie für Korrektheit.
 
-Übersicht aller Lernziele der LPIC 2 Prüfung Version 4.5: [https://wiki.lpi.org/wiki/LPIC-2_Objectives_V4.5(DE)#Lernziele:_Pr.C3.BCfung_201](https://wiki.lpi.org/wiki/LPIC-2_Objectives_V4.5(DE)#Lernziele:_Pr.C3.BCfung_201)
+Übersicht aller Lernziele der LPIC 2 Prüfung Version 4.5: [https://wiki.lpi.org/wiki/LPIC-2_Objectives_V4.5(DE)](https://wiki.lpi.org/wiki/LPIC-2_Objectives_V4.5(DE))
 
 ## Inhaltsverzeichnis
 
@@ -18,3 +18,4 @@ Das ist meine persönliche Vorbereitung auf die LPIC 2 Zertifizierung. Ich gebe 
 - [207-Domain-Name-Server Gewichtungen: 3,3,2](./207-Domain-Name-Server.html)
 - [208-http-Dienste Gewichtungen: 4,3,2,2](./208-http-Dienste.html)
 - [209-Gemeinsamer-Dateizugriff Gewichtungen: 5,3](./209-Gemeinsamer-Dateizugriff.html)
+- [210-Verwalten-von-Netzwerk-Clients Gewichtungen: 2,3,2,4](./210-Verwalten-von-Netzwerk-Clients.html)
