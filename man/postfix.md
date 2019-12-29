@@ -259,83 +259,89 @@ The following options are implemented:
        $daemon_directory/dynamicmaps.cf, plug-in database clients
 
 ### SEE ALSO
+
 Commands:
-postalias(1), create/update/query alias database
-postcat(1), examine Postfix queue file
-postconf(1), Postfix configuration utility
-postfix(1), Postfix control program
-postfix-tls(1), Postfix TLS management
-postkick(1), trigger Postfix daemon
-postlock(1), Postfix-compatible locking
-postlog(1), Postfix-compatible logging
-postmap(1), Postfix lookup table manager
-postmulti(1), Postfix multi-instance manager
-postqueue(1), Postfix mail queue control
-postsuper(1), Postfix housekeeping
-mailq(1), Sendmail compatibility interface
-newaliases(1), Sendmail compatibility interface
-sendmail(1), Sendmail compatibility interface
+    postalias(1), create/update/query alias database
+    postcat(1), examine Postfix queue file
+    postconf(1), Postfix configuration utility
+    postfix(1), Postfix control program
+    postfix-tls(1), Postfix TLS management
+    postkick(1), trigger Postfix daemon
+    postlock(1), Postfix-compatible locking
+    postlog(1), Postfix-compatible logging
+    postmap(1), Postfix lookup table manager
+    postmulti(1), Postfix multi-instance manager
+    postqueue(1), Postfix mail queue control
+    postsuper(1), Postfix housekeeping
+    mailq(1), Sendmail compatibility interface
+    newaliases(1), Sendmail compatibility interface
+    sendmail(1), Sendmail compatibility interface
 
 Postfix configuration:
-bounce(5), Postfix bounce message templates
-master(5), Postfix master.cf file syntax
-postconf(5), Postfix main.cf file syntax
-postfix-wrapper(5), Postfix multi-instance API
+
+    bounce(5), Postfix bounce message templates
+    master(5), Postfix master.cf file syntax
+    postconf(5), Postfix main.cf file syntax
+    postfix-wrapper(5), Postfix multi-instance API
 
 Table-driven mechanisms:
-access(5), Postfix SMTP access control table
-aliases(5), Postfix alias database
-canonical(5), Postfix input address rewriting
-generic(5), Postfix output address rewriting
-header_checks(5), body_checks(5), Postfix content inspection
-relocated(5), Users that have moved
-transport(5), Postfix routing table
-virtual(5), Postfix virtual aliasing
+
+    access(5), Postfix SMTP access control table
+    aliases(5), Postfix alias database
+    canonical(5), Postfix input address rewriting
+    generic(5), Postfix output address rewriting
+    header_checks(5), body_checks(5), Postfix content inspection
+    relocated(5), Users that have moved
+    transport(5), Postfix routing table
+    virtual(5), Postfix virtual aliasing
 
 Table lookup mechanisms:
-cidr_table(5), Associate CIDR pattern with value
-ldap_table(5), Postfix LDAP client
-lmdb_table(5), Postfix LMDB database driver
-memcache_table(5), Postfix memcache client
-mysql_table(5), Postfix MYSQL client
-nisplus_table(5), Postfix NIS+ client
-pcre_table(5), Associate PCRE pattern with value
-pgsql_table(5), Postfix PostgreSQL client
-regexp_table(5), Associate POSIX regexp pattern with value
-socketmap_table(5), Postfix socketmap client
-sqlite_table(5), Postfix SQLite database driver
-tcp_table(5), Postfix client-server table lookup
+
+    cidr_table(5), Associate CIDR pattern with value
+    ldap_table(5), Postfix LDAP client
+    lmdb_table(5), Postfix LMDB database driver
+    memcache_table(5), Postfix memcache client
+    mysql_table(5), Postfix MYSQL client
+    nisplus_table(5), Postfix NIS+ client
+    pcre_table(5), Associate PCRE pattern with value
+    pgsql_table(5), Postfix PostgreSQL client
+    regexp_table(5), Associate POSIX regexp pattern with value
+    socketmap_table(5), Postfix socketmap client
+    sqlite_table(5), Postfix SQLite database driver
+    tcp_table(5), Postfix client-server table lookup
 
 Daemon processes:
-anvil(8), Postfix connection/rate limiting
-bounce(8), defer(8), trace(8), Delivery status reports
-cleanup(8), canonicalize and enqueue message
-discard(8), Postfix discard delivery agent
-dnsblog(8), DNS black/whitelist logger
-error(8), Postfix error delivery agent
-flush(8), Postfix fast ETRN service
-local(8), Postfix local delivery agent
-master(8), Postfix master daemon
-oqmgr(8), old Postfix queue manager
-pickup(8), Postfix local mail pickup
-pipe(8), deliver mail to non-Postfix command
-postscreen(8), Postfix zombie blocker
-proxymap(8), Postfix lookup table proxy server
-qmgr(8), Postfix queue manager
-qmqpd(8), Postfix QMQP server
-scache(8), Postfix connection cache manager
-showq(8), list Postfix mail queue
-smtp(8), lmtp(8), Postfix SMTP+LMTP client
-smtpd(8), Postfix SMTP server
-spawn(8), run non-Postfix server
-tlsmgr(8), Postfix TLS cache and randomness manager
-tlsproxy(8), Postfix TLS proxy server
-trivial-rewrite(8), Postfix address rewriting
-verify(8), Postfix address verification
-virtual(8), Postfix virtual delivery agent
+
+    anvil(8), Postfix connection/rate limiting
+    bounce(8), defer(8), trace(8), Delivery status reports
+    cleanup(8), canonicalize and enqueue message
+    discard(8), Postfix discard delivery agent
+    dnsblog(8), DNS black/whitelist logger
+    error(8), Postfix error delivery agent
+    flush(8), Postfix fast ETRN service
+    local(8), Postfix local delivery agent
+    master(8), Postfix master daemon
+    oqmgr(8), old Postfix queue manager
+    pickup(8), Postfix local mail pickup
+    pipe(8), deliver mail to non-Postfix command
+    postscreen(8), Postfix zombie blocker
+    proxymap(8), Postfix lookup table proxy server
+    qmgr(8), Postfix queue manager
+    qmqpd(8), Postfix QMQP server
+    scache(8), Postfix connection cache manager
+    showq(8), list Postfix mail queue
+    smtp(8), lmtp(8), Postfix SMTP+LMTP client
+    smtpd(8), Postfix SMTP server
+    spawn(8), run non-Postfix server
+    tlsmgr(8), Postfix TLS cache and randomness manager
+    tlsproxy(8), Postfix TLS proxy server
+    trivial-rewrite(8), Postfix address rewriting
+    verify(8), Postfix address verification
+    virtual(8), Postfix virtual delivery agent
 
 Other:
-syslogd(8), system logging
+
+    syslogd(8), system logging
 
 ### README FILES
        Use  "postconf readme_directory" or "postconf html_directory" to locate
@@ -391,4 +397,3 @@ syslogd(8), system logging
        Dean Strik, Eindhoven University, The Netherlands
 
                                                                     POSTFIX(1)
-
