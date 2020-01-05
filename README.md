@@ -21,3 +21,7 @@ Das ist meine persönliche Vorbereitung auf die LPIC 2 Zertifizierung. Ich gebe 
 - [210-Verwalten-von-Netzwerk-Clients Gewichtungen: 2,3,2,4](./210-Verwalten-von-Netzwerk-Clients.html)
 - [211-E-Mail-Dienste Gewichtungen: 4,2,2](./211-E-Mail-Dienste.html)
 - [212-Systemsicherheit Gewichtungen: 3,2,4,3,2](./212-Systemsicherheit.html)
+
+## youtube
+
+Meine kleine Playlist befindet sich unter [https://www.youtube.com/playlist?list=PLR8RMhrO1MW357aG4MRcLpJ1yj-qzP0-U](https://www.youtube.com/playlist?list=PLR8RMhrO1MW357aG4MRcLpJ1yj-qzP0-U)

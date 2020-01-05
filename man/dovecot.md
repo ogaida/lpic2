@@ -1,0 +1,106 @@
+### NAME
+dovecot - a secure and highly configurable IMAP and POP3 server
+
+### SYNOPSIS
+       dovecot [-Fp] [-c config-file]
+       dovecot -a [-c config-file]
+       dovecot -n [-c config-file]
+       dovecot --build-options
+       dovecot --help
+       dovecot --hostdomain
+       dovecot --version
+       dovecot reload
+       dovecot stop
+
+### DESCRIPTION
+Dovecot is an open source IMAP and POP3 server for Linux/UNIX-like sys‐
+tems, written with security primarily in mind.  Dovecot is an excellent
+choice  for  both  small and large installations.  It's fast, simple to
+set up, requires no special administration and it uses very little mem‐
+ory.
+
+### OPTIONS
+       -a     Dump all configuration settings to stdout and exit successfully.
+              The same as doveconf -a.
+
+       -c config-file
+              Start dovecot with an alternative configuration.
+
+       -F     Run dovecot in foreground, do not daemonize.
+
+       -n     Dump non-default settings to stdout and exit successfully.   The
+              same as doveconf -n.
+
+       -p     Prompt  for  the  ssl key password for the configured ssl_key on
+              startup.
+
+       --build-options
+              Show Dovecot's build options and exit successfully.
+
+       --help Print a usage message to stdout and exit successfully.
+
+       --hostdomain
+              Shows the current host.domain name of the system.  If the domain
+              lookup  should  fail  for some reason, only the hostname will be
+              shown.
+
+       --version
+              Show Dovecot's version and exit successfully.
+
+### COMMANDS
+       reload Force dovecot to reload its configuration.
+
+       stop   Shutdown dovecot and all its child processes.
+
+       When shutdown_clients is set to no, existing sessions will continue  to
+       use  the  old settings, after a dovecot reload.  Also all sessions will
+       keep alive after a dovecot stop.
+       By default all active sessions will be shut down.
+
+### SIGNALS
+       Dovecot handles the following signals as described:
+
+       HUP    Force dovecot to reload its configuration.
+
+       INT    Shutdown dovecot and all its child processes.
+
+       TERM   Shutdown dovecot and all its child processes.
+
+       USR1   Force dovecot to reopen  all  configured  log  files  (log_path,
+              info_log_path and debug_log_path).
+
+       The signals ALARM and PIPE are ignored.
+
+### FILES
+       /etc/dovecot/dovecot.conf
+              Dovecot's main configuration file.
+
+       /etc/dovecot/dovecot-ldap.conf.ext
+              Dovecot's LDAP authdb/userdb module configuration file.
+
+       /etc/dovecot/dovecot-sql.conf.ext
+              Dovecot's SQL authdb/userdb module configuration file.
+
+       /etc/dovecot/dovecot-dict-sql.conf.ext
+              Dovecot's dict configuration with SQL-backend.
+
+       /etc/dovecot/conf.d/auth-*-conf.ext
+              Configuration files of different authentication modules.
+
+       /etc/dovecot/conf.d/*.conf
+              Configuration files of different services and settings.
+
+### REPORTING BUGS
+Report  bugs, including doveconf -n output, to the Dovecot Mailing List
+<dovecot@dovecot.org>.  Information about reporting bugs  is  available
+at: http://dovecot.org/bugreport.html
+
+### AUTHOR
+Dovecot  <http://dovecot.org>  and its manual pages were written by the
+Dovecot authors <http://dovecot.org/doc/AUTHORS>, mainly Timo  Sirainen
+<tss  at  iki.fi>,  and  are  licensed  under  the terms of the MIT and
+LGPLv2.1 licenses, see <http://dovecot.org/doc/COPYING> for details.
+
+### SEE ALSO
+doveadm(1), doveconf(1), dovecot-lda(1), dsync(1)
+
