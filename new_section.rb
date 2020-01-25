@@ -1,17 +1,20 @@
 #!/usr/bin/env ruby
 require "erb"
 
-section = "209"
-section_name = "Gemeinsamer Dateizugriff"
+section = "206"
+section_name = "Systemwartung"
 
 
 @chapters = [
   {
-    :name => "Samba-Server-Konfiguration",
-    :weigth => "5"
+    :name => "Programme vom Quellcode aus kompilieren und installieren",
+    :weigth => "2"
   },{
-    :name => "NFS-Server-Konfiguration",
+    :name => "Sicherheitskopien",
     :weigth => "3"
+  },{
+    :name => "Benutzer über Systemangelegenheiten benachrichtigen",
+    :weigth => "1"
   }
 ]
 
